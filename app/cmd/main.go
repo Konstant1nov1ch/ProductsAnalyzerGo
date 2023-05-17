@@ -7,11 +7,10 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
+	filePath := os.Getenv("FILE_PATH")
+	if filePath == "" {
 		log.Fatal("Please provide a file path")
 	}
-
-	filePath := os.Args[1]
 
 	err := app.App(filePath)
 	if err != nil {
