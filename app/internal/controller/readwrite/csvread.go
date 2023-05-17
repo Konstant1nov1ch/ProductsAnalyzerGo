@@ -3,6 +3,7 @@ package readwrite
 import (
 	"ProductAnalyzerGo/app/internal/controller"
 	"encoding/csv"
+	"log"
 	"os"
 	"strconv"
 )
@@ -12,7 +13,12 @@ func ReadCSV(filePath string) ([]controller.Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Fatal("IOError")
+		}
+	}(file)
 
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
