@@ -2,7 +2,7 @@
   {
     "name": "Product 1",
     "cost": "10.99",
-    "rating": 3
+    "rating": 3000
   },
   {
     "name": "Product 2",
@@ -12,6 +12,61 @@
   {
     "name": "Product 3",
     "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 4",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 5",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 6",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 7",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 8",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 10",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 9
+  },
+  {
+    "name": "Product 11",
+    "cost": "1000.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 3",
+    "cost": "8.99",
+    "test": "test",
+    "rating": 5
+  },
+  {
+    "name": "Product 3",
+    "cost": "8.99",
+    "test": "test",
     "rating": 5
   }
 ]

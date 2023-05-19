@@ -3,12 +3,14 @@ package readwrite
 import (
 	"ProductAnalyzerGo/app/internal/controller"
 	"encoding/csv"
+	"io"
 	"log"
 	"os"
 	"strconv"
+	"sync"
 )
 
-func ReadCSV(filePath string) ([]controller.Product, error) {
+func ReadCSV(filePath string, bufferSize int, numWorkers int) ([]controller.Product, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -21,26 +23,49 @@ func ReadCSV(filePath string) ([]controller.Product, error) {
 	}(file)
 
 	reader := csv.NewReader(file)
-	records, err := reader.ReadAll()
-	if err != nil {
-		return nil, err
+
+	var products []controller.Product
+	productsCh := make(chan controller.Product, bufferSize)
+	wg := sync.WaitGroup{}
+
+	for i := 0; i < numWorkers; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			for product := range productsCh {
+				products = append(products, product)
+			}
+		}()
 	}
 
-	products := make([]controller.Product, len(records)-1)
-	for i, record := range records[1:] {
-		product := controller.Product{
-			Name: record[0],
-			Cost: record[1],
+	for {
+		records, err := reader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, err
 		}
 
-		rating, err := strconv.Atoi(record[2])
+		product := controller.Product{
+			Name: records[0],
+			Cost: records[1],
+		}
+
+		rating, err := strconv.Atoi(records[2])
 		if err != nil {
-			return nil, err
+			// Обработка ошибки: рейтинг имеет неверный формат
+			// Можно установить значение по умолчанию или пропустить продукт
+			continue
 		}
 		product.Rating = rating
 
-		products[i] = product
+		productsCh <- product
 	}
+
+	close(productsCh)
+	wg.Wait()
 
 	return products, nil
 }

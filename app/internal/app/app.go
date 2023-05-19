@@ -8,16 +8,17 @@ import (
 	"strings"
 )
 
-func App(filePath string) error {
+func App(filePath string, numWorkers int) error {
 	var products []controller.Product
 	var err error
-
+	// Размер буфера я решил обрабатывать файл чанками по 10 строк (на очень больших файлах можно увеличить этот параметр)
+	var bufferSize = 10
 	if strings.HasSuffix(filePath, ".json") {
 		// Чтение данных из JSON
-		products, err = readwrite.ReadJSON(filePath)
+		products, err = readwrite.ReadJSON(filePath, bufferSize, numWorkers)
 	} else if strings.HasSuffix(filePath, ".csv") {
 		// Чтение данных из CSV
-		products, err = readwrite.ReadCSV(filePath)
+		products, err = readwrite.ReadCSV(filePath, bufferSize, numWorkers)
 	} else {
 		return fmt.Errorf("unsupported file format: %s", filePath)
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ProductAnalyzerGo/app/internal/app"
+	a "ProductAnalyzerGo/app/internal/app"
 	"log"
 	"os"
 )
@@ -11,8 +11,11 @@ func main() {
 	if filePath == "" {
 		log.Fatal("Please provide a file path")
 	}
-
-	err := app.App(filePath)
+	//для быстрого теста
+	//filePath := "resources/productTest.csv"
+	//количество потоков
+	var numWorkers = 4
+	err := a.App(filePath, numWorkers)
 	if err != nil {
 		log.Fatal(err)
 	}
