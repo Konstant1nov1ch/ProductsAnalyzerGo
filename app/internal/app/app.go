@@ -11,7 +11,7 @@ import (
 func App(filePath string, numWorkers int) error {
 	var products []controller.Product
 	var err error
-	// Размер буфера я решил обрабатывать файл чанками по 10 строк (на очень больших файлах можно увеличить этот параметр)
+	// Размер буфера я решил обрабатывать файл чанками по 10 (на очень больших файлах можно увеличить этот параметр)
 	var bufferSize = 10
 	if strings.HasSuffix(filePath, ".json") {
 		// Чтение данных из JSON

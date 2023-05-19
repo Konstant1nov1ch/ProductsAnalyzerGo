@@ -25,7 +25,7 @@ func ReadCSV(filePath string, bufferSize int, numWorkers int) ([]controller.Prod
 	reader := csv.NewReader(file)
 
 	var products []controller.Product
-	productsCh := make(chan controller.Product, bufferSize)
+	productsCh := make(chan []controller.Product, numWorkers)
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < numWorkers; i++ {
@@ -33,16 +33,20 @@ func ReadCSV(filePath string, bufferSize int, numWorkers int) ([]controller.Prod
 		go func() {
 			defer wg.Done()
 
-			for product := range productsCh {
-				products = append(products, product)
+			for chunk := range productsCh {
+				for _, product := range chunk {
+					products = append(products, product)
+				}
 			}
 		}()
 	}
 
+	chunk := make([]controller.Product, 0, bufferSize)
 	for {
 		records, err := reader.Read()
 		if err != nil {
 			if err == io.EOF {
+				productsCh <- chunk
 				break
 			}
 			return nil, err
@@ -60,7 +64,12 @@ func ReadCSV(filePath string, bufferSize int, numWorkers int) ([]controller.Prod
 		}
 		product.Rating = rating
 
-		productsCh <- product
+		chunk = append(chunk, product)
+
+		if len(chunk) == bufferSize {
+			productsCh <- chunk
+			chunk = make([]controller.Product, 0, bufferSize)
+		}
 	}
 
 	close(productsCh)

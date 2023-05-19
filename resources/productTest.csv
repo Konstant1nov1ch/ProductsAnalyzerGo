@@ -1,4 +1,4 @@
-Product 1,10,3
+Product 1,1000000000000000,3
 Product 2,19.99,0
 Product 3,8.99,4
 Product 4,15.99,4
@@ -14,7 +14,7 @@ Product 13,16.99,3
 Product 14,1,5
 Product 15,10.99,4
 Product 16,18.99,3
-Product 17,7.99,5
+Product 17,7.99,99999999
 Product 18,12.99,5
 Product 19,15.99,4
 Product 20,9.99,3
@@ -946,5 +946,5 @@ Product 69,14.99,3
 Product 70,9.99,4
 Product 71,10.99,4
 Product 72,15.99,5
-Product 1012,12192192,1000
-Product 10990,12192192,1000000
+Product 1012,12192192,1009999999999999
+Product 10990,12192192,100
