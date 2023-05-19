@@ -55,8 +55,7 @@ func ReadCSV(filePath string, bufferSize int, numWorkers int) ([]controller.Prod
 
 		rating, err := strconv.Atoi(records[2])
 		if err != nil {
-			// Обработка ошибки: рейтинг имеет неверный формат
-			// Можно установить значение по умолчанию или пропустить продукт
+			rating = 0
 			continue
 		}
 		product.Rating = rating
